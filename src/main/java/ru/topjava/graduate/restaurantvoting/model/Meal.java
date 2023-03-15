@@ -22,4 +22,10 @@ public class Meal extends AbstractNamedEntity{
     @JoinColumn(name = "menu_id", nullable = false)
     @JsonIgnore
     private Menu menu;
+
+    public Meal(Integer id, String name, int price, Menu menu) {
+        super(id, name);
+        this.price = price;
+        this.menu = menu;
+    }
 }

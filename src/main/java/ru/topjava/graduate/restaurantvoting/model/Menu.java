@@ -34,8 +34,16 @@ public class Menu extends AbstractNamedEntity {
     private Set<Meal> meals;
 
     @ManyToMany
-    @JoinTable(name = "menu_users",
+    @JoinTable(
+            name = "menu_voting",
             joinColumns = @JoinColumn(name = "menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+            inverseJoinColumns = @JoinColumn(name = "voting_id"))
+    private Set<Voting> votings;
+
+    public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
+        super(id, name);
+        this.date = date;
+        this.restaurant = restaurant;
+        this.meals = meals;
+    }
 }

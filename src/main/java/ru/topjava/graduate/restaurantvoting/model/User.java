@@ -1,5 +1,6 @@
 package ru.topjava.graduate.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class User extends AbstractNamedEntity {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(max = 256)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -38,13 +40,6 @@ public class User extends AbstractNamedEntity {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
-
-    @ManyToMany
-    @JoinTable(
-            name = "menu_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private Set<Menu> menus;
 
     public User(Integer id, String name, String email, String password, Collection<Role> roles) {
         super(id, name);
