@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,18 +42,15 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(
-            name = "menu_users",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private Set<Menu> menus;
+    @OneToMany(mappedBy = "user")
+    private List<MenuUsers> menus;
 
-    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, Collection<Role> roles, Collection<Menu> menus) {
         super(id, name);
         this.email = email;
         this.password = password;
         setRoles(roles);
+
     }
 
     public void setRoles(Collection<Role> roles) {

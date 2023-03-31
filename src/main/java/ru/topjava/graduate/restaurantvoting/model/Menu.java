@@ -7,10 +7,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,17 +31,24 @@ public class Menu extends AbstractNamedEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Meal> meals;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "menu_meal",
+            joinColumns = @JoinColumn(name = "menu_id"),
+            inverseJoinColumns = @JoinColumn(name = "meal_id"))
+    private List<Meal> meals;
 
-    @ManyToMany(mappedBy = "menus")
-    private Set<User> votedUsers;
+    @OneToMany(mappedBy = "menu")
+    private List<MenuUsers> users;
 
-    public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
+    public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Collection<Meal> meals) {
         super(id, name);
         this.date = date;
         this.restaurant = restaurant;
-        this.meals = meals;
+        setMeals(meals);
+    }
+
+    public void setMeals(Collection<Meal> meals) {
+        this.meals = CollectionUtils.isEmpty(meals) ? Collections.emptyList() : List.copyOf(meals);
     }
 }

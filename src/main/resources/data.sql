@@ -16,16 +16,27 @@ VALUES ('restaurant1', 'address1'),
 INSERT INTO MENU (NAME, DATE, RESTAURANT_ID)
 VALUES ('menu1', '2020-01-30', 1),
        ('menu2', '2020-01-30', 2),
-       ('menu3', '2020-01-30', 3);
+       ('menu3', '2020-01-30', 3),
+       ('menu4', '2020-02-01', 1);
 
-INSERT INTO MEAL (NAME, PRICE, MENU_ID)
-VALUES ('meal1', 100, 1),
-       ('meal2', 200, 1),
-       ('meal3', 300, 2),
-       ('meal4', 400, 2),
-       ('meal5', 500, 3),
-       ('meal6', 600, 3);
+INSERT INTO MEAL (NAME, PRICE, RESTAURANT_ID)
+VALUES ('restaurant1meal1', 100, 1),
+       ('restaurant1meal2', 200, 1),
+       ('restaurant2meal1', 300, 2),
+       ('restaurant2meal2', 400, 2),
+       ('restaurant3meal1', 500, 3),
+       ('restaurant3meal2', 600, 3);
 
-INSERT INTO MENU_USERS (USER_ID, MENU_ID)
+INSERT INTO MENU_MEAL (MENU_ID, MEAL_ID)
 VALUES (1, 1),
-       (2, 2);
+        (1, 2),
+        (2, 3),
+        (2, 4),
+        (3, 5),
+        (3, 6),
+        (4, 1),
+        (4, 2);
+
+INSERT INTO MENU_USERS (MENU_ID, USER_ID, VOTE_DATE_TIME)
+VALUES (1, 1, '2020-01-30 19:14:20'),
+       (2, 2, '2020-01-30 19:13:00');

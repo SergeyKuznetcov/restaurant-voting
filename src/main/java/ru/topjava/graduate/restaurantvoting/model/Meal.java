@@ -7,25 +7,38 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "meal")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meal extends AbstractNamedEntity{
+public class Meal extends AbstractNamedEntity {
     @Column(name = "price", nullable = false)
     @Range(min = 10, max = 5000)
     private int price;
 
-    @ManyToOne
-    @JoinColumn(name = "menu_id", nullable = false)
+    @ManyToMany(mappedBy = "meals")
     @JsonIgnore
-    private Menu menu;
+    private List<Menu> menus;
 
-    public Meal(Integer id, String name, int price, Menu menu) {
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonIgnore
+    private Restaurant restaurant;
+
+    public Meal(Integer id, String name, int price, Collection<Menu> menus) {
         super(id, name);
         this.price = price;
-        this.menu = menu;
+        setMenus(menus);
+    }
+
+    public void setMenus(Collection<Menu> menus) {
+        this.menus = CollectionUtils.isEmpty(menus) ? Collections.emptyList() : List.copyOf(menus);
     }
 }

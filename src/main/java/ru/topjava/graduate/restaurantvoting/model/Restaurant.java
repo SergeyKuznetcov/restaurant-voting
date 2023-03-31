@@ -30,13 +30,22 @@ public class Restaurant extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Menu> menus;
 
-    public Restaurant(Integer id, String name, String address, List<Menu> menus) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Meal> meals;
+
+    public Restaurant(Integer id, String name, String address, List<Menu> menus, List<Meal> meals) {
         super(id, name);
         this.address = address;
-        this.menus = menus;
+        setMenus(menus);
+        setMeals(meals);
     }
 
-    public void setMenus(Collection<Menu> menus){
+    public void setMenus(Collection<Menu> menus) {
         this.menus = CollectionUtils.isEmpty(menus) ? Collections.emptyList() : List.copyOf(menus);
+    }
+
+    public void setMeals(Collection<Meal> meals) {
+        this.meals = CollectionUtils.isEmpty(meals) ? Collections.emptyList() : List.copyOf(meals);
     }
 }
