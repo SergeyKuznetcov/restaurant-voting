@@ -33,12 +33,8 @@ public class Menu extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Meal> meals;
 
-    @ManyToMany
-    @JoinTable(
-            name = "menu_voting",
-            joinColumns = @JoinColumn(name = "menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "voting_id"))
-    private Set<Voting> votings;
+    @ManyToMany(mappedBy = "menus")
+    private Set<User> votedUsers;
 
     public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
         super(id, name);
