@@ -34,3 +34,10 @@ spring:
     rest:
       base-path: /api
       return-body-on-create: true
+
+    # Jackson Serialization Issue Resolver
+  jackson.visibility:
+    field: any
+    getter: none
+    setter: none
+    is-getter: none
