@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.topjava.graduate.restaurantvoting.util.JsonUtil;
 
 import java.sql.SQLException;
 
@@ -35,6 +36,7 @@ public class AppConfig {
         //hibernate5Module.configure(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS, true);
         mapper.registerModule(hibernate5Module);
         mapper.registerModule(new JavaTimeModule());
+        JsonUtil.setMapper(mapper);
         return mapper;
     }
 }

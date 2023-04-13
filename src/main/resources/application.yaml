@@ -34,10 +34,22 @@ spring:
     rest:
       base-path: /api
       return-body-on-create: true
+  security:
+    user:
+      name: user
+      password: user
+      roles: USER
 
-    # Jackson Serialization Issue Resolver
+  # Jackson Serialization Issue Resolver
   jackson.visibility:
     field: any
     getter: none
     setter: none
     is-getter: none
+
+logging:
+  level:
+    root: WARN
+    ru.javaops.topjava: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+

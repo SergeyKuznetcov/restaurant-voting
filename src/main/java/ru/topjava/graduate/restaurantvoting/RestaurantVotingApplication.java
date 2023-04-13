@@ -5,15 +5,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.topjava.graduate.restaurantvoting.model.Role;
-import ru.topjava.graduate.restaurantvoting.model.User;
 import ru.topjava.graduate.restaurantvoting.repository.UserRepository;
-
-import java.util.Set;
 
 @SpringBootApplication
 @AllArgsConstructor
-public class RestaurantVotingApplication  implements ApplicationRunner {
+public class RestaurantVotingApplication{
     private final UserRepository userRepository;
 
     public static void main(String[] args) {
@@ -21,8 +17,4 @@ public class RestaurantVotingApplication  implements ApplicationRunner {
     }
 
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.println(userRepository.findAll());
-    }
 }

@@ -9,15 +9,15 @@ VALUES ('USER', 1),
        ('USER', 2);
 
 INSERT INTO RESTAURANT (NAME, ADDRESS)
-VALUES ('restaurant1', 'address1'),
-       ('restaurant2', 'address2'),
-       ('restaurant3', 'address3');
+VALUES ('restaurant1', 'restaurant1 address'),
+       ('restaurant2', 'restaurant2 address'),
+       ('restaurant3', 'restaurant3 address');
 
 INSERT INTO MENU (NAME, DATE, RESTAURANT_ID)
-VALUES ('menu1', '2020-01-30', 1),
-       ('menu2', '2020-01-30', 2),
-       ('menu3', '2020-01-30', 3),
-       ('menu4', '2020-02-01', 1);
+VALUES ('restaurant1 menu1', '2020-01-30', 1),
+       ('restaurant2 menu1', '2020-01-30', 2),
+       ('restaurant3 menu1', '2020-01-30', 3),
+       ('restaurant1 menu2', '2020-02-01', 1);
 
 INSERT INTO MEAL (NAME, PRICE, RESTAURANT_ID)
 VALUES ('restaurant1meal1', 100, 1),
@@ -37,6 +37,6 @@ VALUES (1, 1),
         (4, 1),
         (4, 2);
 
-INSERT INTO MENU_USERS (MENU_ID, USER_ID, VOTE_DATE_TIME)
+INSERT INTO VOTE (MENU_ID, USER_ID, VOTE_DATE_TIME)
 VALUES (1, 1, '2020-01-30 19:14:20'),
        (2, 2, '2020-01-30 19:13:00');
