@@ -1,10 +1,10 @@
 package ru.topjava.graduate.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
+import ru.topjava.graduate.restaurantvoting.HasId;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -12,14 +12,13 @@ import org.springframework.data.util.ProxyUtils;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractBaseEntity implements Persistable<Integer> {
+public abstract class AbstractBaseEntity implements Persistable<Integer>, HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
     @Override
-    @JsonIgnore
     public boolean isNew() {
         return id == null;
     }

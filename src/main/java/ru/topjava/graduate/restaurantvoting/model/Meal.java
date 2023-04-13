@@ -2,10 +2,7 @@ package ru.topjava.graduate.restaurantvoting.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
@@ -18,18 +15,17 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant", "menus"})
 public class Meal extends AbstractNamedEntity {
     @Column(name = "price", nullable = false)
     @Range(min = 10, max = 5000)
     private int price;
 
     @ManyToMany(mappedBy = "meals")
-    @JsonIgnore
     private List<Menu> menus;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonIgnore
     private Restaurant restaurant;
 
     public Meal(Integer id, String name, int price, Collection<Menu> menus) {
@@ -38,7 +34,25 @@ public class Meal extends AbstractNamedEntity {
         setMenus(menus);
     }
 
+    public Meal(Integer id, String name, int price) {
+        super(id, name);
+        this.price = price;
+    }
+
+    public void addMenus(Menu... menus) {
+        this.menus.addAll(List.of(menus));
+    }
+
+    public void removeMenuById(int id) {
+        menus.removeIf(menu -> menu.getId() != null && menu.getId() == id);
+    }
+
     public void setMenus(Collection<Menu> menus) {
         this.menus = CollectionUtils.isEmpty(menus) ? Collections.emptyList() : List.copyOf(menus);
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }

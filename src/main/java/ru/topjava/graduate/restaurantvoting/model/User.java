@@ -42,8 +42,8 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    private List<MenuUsers> menus;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Vote> votes;
 
     public User(Integer id, String name, String email, String password, Collection<Role> roles, Collection<Menu> menus) {
         super(id, name);
@@ -60,5 +60,10 @@ public class User extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "User:" + id + '[' + email + ']';
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "menu")
@@ -31,15 +30,15 @@ public class Menu extends AbstractNamedEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "menu_meal",
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "meal_id"))
     private List<Meal> meals;
 
-    @OneToMany(mappedBy = "menu")
-    private List<MenuUsers> users;
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
+    private List<Vote> votes;
 
     public Menu(Integer id, String name, LocalDate date, Restaurant restaurant, Collection<Meal> meals) {
         super(id, name);
@@ -48,7 +47,25 @@ public class Menu extends AbstractNamedEntity {
         setMeals(meals);
     }
 
+    public Menu(Integer id, String name, LocalDate date) {
+        super(id, name);
+        this.date = date;
+    }
+
+    public void addMeals(Meal... meals) {
+        this.meals.addAll(List.of(meals));
+    }
+
+    public void removeMealById(int id) {
+        meals.removeIf(meal -> meal.getId() != null && meal.getId() == id);
+    }
+
     public void setMeals(Collection<Meal> meals) {
         this.meals = CollectionUtils.isEmpty(meals) ? Collections.emptyList() : List.copyOf(meals);
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }
