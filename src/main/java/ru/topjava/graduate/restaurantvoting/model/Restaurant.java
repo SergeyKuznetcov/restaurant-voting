@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
+import ru.topjava.graduate.restaurantvoting.util.validation.NoHtml;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class Restaurant extends AbstractNamedEntity {
     @Column(name = "address")
     @NotBlank
     @Size(min = 8, max = 256)
+    @NoHtml
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.topjava.graduate.restaurantvoting.util.validation.NoHtml;
 
 @MappedSuperclass
 @Getter
@@ -18,6 +19,7 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
     @Column(name = "name")
     @NotBlank
     @Size(max = 128)
+    @NoHtml
     protected String name;
 
     protected AbstractNamedEntity(Integer id, String name) {

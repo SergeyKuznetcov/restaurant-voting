@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;
 import ru.topjava.graduate.restaurantvoting.HasId;
+import ru.topjava.graduate.restaurantvoting.web.HasIdAndEmail;
 
 import java.io.Serializable;
 import java.util.*;
@@ -21,7 +22,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends AbstractNamedEntity implements Serializable {
+public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializable {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -32,7 +33,7 @@ public class User extends AbstractNamedEntity implements Serializable {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(max = 256)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)

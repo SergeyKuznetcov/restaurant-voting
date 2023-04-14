@@ -1,4 +1,4 @@
-package ru.topjava.graduate.restaurantvoting.util;
+package ru.topjava.graduate.restaurantvoting.util.validation;
 
 import lombok.experimental.UtilityClass;
 import ru.topjava.graduate.restaurantvoting.HasId;
