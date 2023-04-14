@@ -52,12 +52,12 @@ public class Menu extends AbstractNamedEntity {
         this.date = date;
     }
 
-    public void addMeals(Meal... meals) {
-        this.meals.addAll(List.of(meals));
+    public void addVotes(Vote...votes){
+        this.votes.addAll(List.of(votes));
     }
 
-    public void removeMealById(int id) {
-        meals.removeIf(meal -> meal.getId() != null && meal.getId() == id);
+    public void addMeals(Meal... meals) {
+        this.meals.addAll(List.of(meals));
     }
 
     public void setMeals(Collection<Meal> meals) {

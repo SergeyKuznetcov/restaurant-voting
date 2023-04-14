@@ -11,18 +11,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;
+import ru.topjava.graduate.restaurantvoting.HasId;
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements Serializable {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -45,12 +44,27 @@ public class User extends AbstractNamedEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Vote> votes;
 
-    public User(Integer id, String name, String email, String password, Collection<Role> roles, Collection<Menu> menus) {
+    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.setRoles(roles);
+    }
+
+    public User(Integer id, String name, String email, String password, Collection<Role> roles, Collection<Vote> votes) {
         super(id, name);
         this.email = email;
         this.password = password;
         setRoles(roles);
+        setVotes(votes);
+    }
 
+    public void addVotes(Vote...votes){
+        this.votes.addAll(List.of(votes));
+    }
+
+    public void setVotes(Collection<Vote> votes){
+        this.votes = CollectionUtils.isEmpty(votes) ? Collections.emptyList() : List.copyOf(votes);
     }
 
     public void setRoles(Collection<Role> roles) {

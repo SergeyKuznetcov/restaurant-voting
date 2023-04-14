@@ -43,10 +43,6 @@ public class Meal extends AbstractNamedEntity {
         this.menus.addAll(List.of(menus));
     }
 
-    public void removeMenuById(int id) {
-        menus.removeIf(menu -> menu.getId() != null && menu.getId() == id);
-    }
-
     public void setMenus(Collection<Menu> menus) {
         this.menus = CollectionUtils.isEmpty(menus) ? Collections.emptyList() : List.copyOf(menus);
     }
