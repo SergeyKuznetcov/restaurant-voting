@@ -1,6 +1,5 @@
 package ru.topjava.graduate.restaurantvoting.web.menu;
 
-import ru.topjava.graduate.restaurantvoting.model.Meal;
 import ru.topjava.graduate.restaurantvoting.model.Menu;
 import ru.topjava.graduate.restaurantvoting.util.RestUrlUtil;
 import ru.topjava.graduate.restaurantvoting.web.MatcherFactory;
@@ -25,11 +24,11 @@ public class MenuTestData {
 
     public static final List<Menu> restaurant1Menus = List.of(menu1, menu4);
 
-    public static Menu getNew(){
+    public static Menu getNew() {
         return new Menu(null, "new menu", LocalDate.of(2023, 1, 20));
     }
 
-    public static Menu getUpdated(){
+    public static Menu getUpdated() {
         return new Menu(MENU1_ID, "updated menu", LocalDate.of(2021, 1, 21));
     }
 }

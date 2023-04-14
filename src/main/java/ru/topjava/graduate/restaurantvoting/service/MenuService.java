@@ -24,11 +24,12 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
     private final MealRepository mealRepository;
-    private final VoteService voteService;
     private final VoteRepository voteRepository;
 
+    private final VoteService voteService;
+
     @Transactional
-    public Optional<Menu> getVotedMenuByDateTimeAndUserId(LocalDateTime localDateTime, int userId){
+    public Optional<Menu> getVotedMenuByDateTimeAndUserId(LocalDateTime localDateTime, int userId) {
         List<Vote> userVotes = voteRepository.getAllByUserId(userId);
         Vote vote = userVotes.stream()
                 .filter(vote1 -> vote1.getDateTime().toLocalDate().equals(localDateTime.toLocalDate()))
@@ -45,7 +46,6 @@ public class MenuService {
         }
         return menuRepository.findAllWithMealsByDate(currDate);
     }
-
 
     @Transactional
     @Modifying

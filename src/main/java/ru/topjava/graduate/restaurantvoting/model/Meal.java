@@ -1,6 +1,5 @@
 package ru.topjava.graduate.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;

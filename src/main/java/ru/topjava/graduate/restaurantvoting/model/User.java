@@ -1,6 +1,5 @@
 package ru.topjava.graduate.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.CollectionUtils;
-import ru.topjava.graduate.restaurantvoting.HasId;
 import ru.topjava.graduate.restaurantvoting.web.HasIdAndEmail;
 
 import java.io.Serializable;
@@ -60,11 +58,11 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail, Serializ
         setVotes(votes);
     }
 
-    public void addVotes(Vote...votes){
+    public void addVotes(Vote... votes) {
         this.votes.addAll(List.of(votes));
     }
 
-    public void setVotes(Collection<Vote> votes){
+    public void setVotes(Collection<Vote> votes) {
         this.votes = CollectionUtils.isEmpty(votes) ? Collections.emptyList() : List.copyOf(votes);
     }
 

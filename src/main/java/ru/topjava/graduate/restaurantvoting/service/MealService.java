@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.topjava.graduate.restaurantvoting.model.Meal;
 import ru.topjava.graduate.restaurantvoting.repository.MealRepository;
-import ru.topjava.graduate.restaurantvoting.repository.MenuRepository;
-import ru.topjava.graduate.restaurantvoting.repository.RestaurantRepository;
 
 @Service
 @AllArgsConstructor

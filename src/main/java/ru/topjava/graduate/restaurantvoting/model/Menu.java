@@ -52,7 +52,7 @@ public class Menu extends AbstractNamedEntity {
         this.date = date;
     }
 
-    public void addVotes(Vote...votes){
+    public void addVotes(Vote... votes) {
         this.votes.addAll(List.of(votes));
     }
 

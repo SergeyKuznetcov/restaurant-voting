@@ -12,7 +12,6 @@ import ru.topjava.graduate.restaurantvoting.util.JsonUtil;
 import ru.topjava.graduate.restaurantvoting.util.UserUtil;
 import ru.topjava.graduate.restaurantvoting.web.AbstractControllerTest;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.topjava.graduate.restaurantvoting.web.user.RegisterController.REST_URL;

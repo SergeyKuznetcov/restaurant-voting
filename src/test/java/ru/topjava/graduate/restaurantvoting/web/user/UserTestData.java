@@ -25,11 +25,11 @@ public class UserTestData {
 
     public static final List<User> users = List.of(admin, guest, user);
 
-    public static User getNew(){
+    public static User getNew() {
         return new User(null, "new user", "new@mail.ru", "newPass", EnumSet.of(Role.USER));
     }
 
-    public static User getUpdated(){
+    public static User getUpdated() {
         return new User(USER_ID, "updated", USER_EMAIL, "newPass", EnumSet.of(Role.USER));
     }
 

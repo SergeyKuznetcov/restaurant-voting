@@ -33,14 +33,14 @@ public class ProfileRestController extends AbstractUserController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal AuthUser authUser){
+    public void delete(@AuthenticationPrincipal AuthUser authUser) {
         userService.delete(authUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser){
+    public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
         log.info("update {} with id={}", userTo, authUser.id());
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();

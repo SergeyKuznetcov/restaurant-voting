@@ -33,7 +33,7 @@ public class AdminMealController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Meal> get(@PathVariable int restaurantId, @PathVariable int id) {
-        log.info("get Meal id = {}, from Restaurant id = {}",id, restaurantId);
+        log.info("get Meal id = {}, from Restaurant id = {}", id, restaurantId);
         return ResponseEntity.of(mealRepository.findByIdAndRestaurantId(id, restaurantId));
     }
 

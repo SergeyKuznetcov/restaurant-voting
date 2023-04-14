@@ -24,11 +24,11 @@ public class MealTestData {
 
     public static final List<Meal> restaurant1Meals = List.of(meal1, meal2);
 
-    public static Meal getNew(){
+    public static Meal getNew() {
         return new Meal(null, "newMeal", 666);
     }
 
-    public static Meal getUpdated(){
+    public static Meal getUpdated() {
         return new Meal(MEAL1_ID, "updated meal", 999);
     }
 }

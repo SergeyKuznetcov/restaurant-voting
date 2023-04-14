@@ -48,14 +48,14 @@ public class AdminUserController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @Valid @RequestBody User user){
+    public void update(@PathVariable int id, @Valid @RequestBody User user) {
         log.info("update User id = {}", id);
         assureIdConsistent(user, id);
         userRepository.save(user);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> saveWithLocation(@Valid @RequestBody User user){
+    public ResponseEntity<User> saveWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
         User created = prepareAndSave(user);

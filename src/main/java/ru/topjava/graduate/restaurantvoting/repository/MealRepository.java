@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.topjava.graduate.restaurantvoting.exception.DataConflictException;
 import ru.topjava.graduate.restaurantvoting.model.Meal;
-import ru.topjava.graduate.restaurantvoting.service.MealService;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +26,8 @@ public interface MealRepository extends BaseRepository<Meal> {
 
     List<Meal> findAllByMenusId(int menuId);
 
-    default Meal checkBelong(int mealId, int restaurantId){
+    default Meal checkBelong(int mealId, int restaurantId) {
         return findByIdAndRestaurantId(mealId, restaurantId).orElseThrow(
-                ()->new DataConflictException("Meal with id = " + mealId + " doesn't belong to Restaurant with id = " + restaurantId));
+                () -> new DataConflictException("Meal with id = " + mealId + " doesn't belong to Restaurant with id = " + restaurantId));
     }
 }

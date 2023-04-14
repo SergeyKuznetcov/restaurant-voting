@@ -18,7 +18,8 @@ import ru.topjava.graduate.restaurantvoting.service.RestaurantService;
 import java.net.URI;
 import java.util.List;
 
-import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.*;
+import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
+import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @Slf4j
