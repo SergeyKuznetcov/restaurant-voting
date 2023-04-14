@@ -1,6 +1,5 @@
 package ru.topjava.graduate.restaurantvoting.web.vote;
 
-import ru.topjava.graduate.restaurantvoting.model.Meal;
 import ru.topjava.graduate.restaurantvoting.model.Menu;
 import ru.topjava.graduate.restaurantvoting.model.Role;
 import ru.topjava.graduate.restaurantvoting.model.User;
@@ -14,7 +13,11 @@ import java.util.Set;
 public class VoteTestData {
 
     public static final int USER_ID = 1;
-    public static final LocalDateTime testDateTime = LocalDateTime.of(2020, 1, 30, 15, 0);
+    public static final int NEW_VOTED_MENU_ID = 4;
+    public static final int OLD_VOTED_MENU_ID = 1;
+    public static final int UPDATED_VOTED_MENU_ID = 3;
+    public static final LocalDateTime testDateTime1 = LocalDateTime.of(2020, 1, 30, 15, 0);
+    public static final LocalDateTime testDateTime2 = LocalDateTime.of(2020, 2, 1, 15, 0);
     public static final User user = new User(USER_ID, "User", "user@yandex.ru", "user", Set.of(Role.USER));
 
     public static final List<Menu> actualMenus = List.of(MenuTestData.menu1, MenuTestData.menu2, MenuTestData.menu3);

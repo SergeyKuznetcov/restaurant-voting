@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.topjava.graduate.restaurantvoting.exception.DataConflictException;
+import ru.topjava.graduate.restaurantvoting.exception.IllegalRequestDataException;
 import ru.topjava.graduate.restaurantvoting.model.Menu;
 import ru.topjava.graduate.restaurantvoting.model.User;
 import ru.topjava.graduate.restaurantvoting.model.Vote;
 import ru.topjava.graduate.restaurantvoting.repository.MenuRepository;
-import ru.topjava.graduate.restaurantvoting.repository.UserRepository;
 import ru.topjava.graduate.restaurantvoting.repository.VoteRepository;
+import ru.topjava.graduate.restaurantvoting.util.DateTimeUtil;
 import ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,14 +22,15 @@ public class VoteService {
 
     private final VoteRepository voteRepository;
     private final MenuRepository menuRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     @Modifying
-    public Vote vote(int menuId, User user) {
+    public Vote vote(int menuId, User user, LocalDateTime localDateTime) {
+        Menu menu = menuRepository.getExisted(menuId);
+        if (!DateTimeUtil.getActualDateByDateTime(localDateTime).equals(menu.getDate())) {
+            throw new IllegalRequestDataException("User cant vote for Menu id = " + menuId);
+        }
         Vote vote = voteRepository.getWithMenuAndUser(menuId, user.id()).orElse(null);
-        Menu menu = menuRepository.getWithVotes(menuId).orElseThrow(
-                () -> new DataConflictException("this is no Menu with id = " + menuId));
         if (vote == null) {
             vote = voteRepository.save(new Vote(menu, user));
             user.addVotes(vote);
