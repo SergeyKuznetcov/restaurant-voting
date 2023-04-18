@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,14 +32,12 @@ public class RestaurantAdminController {
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping
-    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         log.info("get all Restaurants");
         return restaurantRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @GetMapping("/{id}")
-    @Cacheable("restaurants")
     public ResponseEntity<Restaurant> get(@PathVariable int id) {
         log.info("get Restaurant id = {}", id);
         return ResponseEntity.of(restaurantRepository.findById(id));
@@ -55,7 +52,7 @@ public class RestaurantAdminController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CachePut(value = "restaurants", key = "#restaurant.name")
+    @CachePut(value = "restaurants", key = "#restaurant.id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
         assureIdConsistent(restaurant, id);
@@ -64,7 +61,6 @@ public class RestaurantAdminController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CachePut(value = "restaurants", key = "#restaurant.name")
     public ResponseEntity<Restaurant> saveWithLocation(@RequestBody Restaurant restaurant) {
         log.info("create new Restaurant");
         checkNew(restaurant);
