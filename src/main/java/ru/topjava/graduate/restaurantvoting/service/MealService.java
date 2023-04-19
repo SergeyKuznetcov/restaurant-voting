@@ -16,6 +16,7 @@ public class MealService {
     @Transactional
     @Modifying
     public void delete(int restaurantId, int id) {
+        mealRepository.getExisted(id);
         Meal meal = mealRepository.checkBelong(id, restaurantId);
         meal.getMenus().forEach(menu -> menu.getMeals().removeIf(meal1 -> meal1.id() == id));
 

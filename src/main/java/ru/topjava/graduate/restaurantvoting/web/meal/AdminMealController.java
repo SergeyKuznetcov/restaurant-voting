@@ -17,6 +17,7 @@ import ru.topjava.graduate.restaurantvoting.util.RestUrlUtil;
 import java.net.URI;
 import java.util.List;
 
+import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
 @RestController
@@ -46,18 +47,23 @@ public class AdminMealController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
+        log.info("delete Meal id = {} from Restaurant id {}", id, restaurantId);
         mealService.delete(restaurantId, id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Meal meal, @PathVariable int restaurantId, @PathVariable int id) {
+        log.info("update Meal id = {} from Restaurant id = {}", id, restaurantId);
+        assureIdConsistent(meal, id);
+        mealRepository.getExisted(id);
         meal.setRestaurant(restaurantRepository.getExisted(restaurantId));
         mealRepository.save(meal);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> saveWithLocation(@PathVariable int restaurantId, @RequestBody Meal meal) {
+    public ResponseEntity<Meal> saveWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Meal meal) {
+        log.info("create new Meal {} for Restaurant id = {}", meal, restaurantId);
         meal.setRestaurant(restaurantRepository.getExisted(restaurantId));
         checkNew(meal);
         Meal created = mealRepository.save(meal);

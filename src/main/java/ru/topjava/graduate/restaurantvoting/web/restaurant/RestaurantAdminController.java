@@ -1,5 +1,6 @@
 package ru.topjava.graduate.restaurantvoting.web.restaurant;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -54,15 +55,16 @@ public class RestaurantAdminController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CachePut(value = "restaurants", key = "#restaurant.id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
+    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         assureIdConsistent(restaurant, id);
+        restaurantRepository.getExisted(id);
         log.info("update Restaurant id = {}", id);
         restaurantRepository.save(restaurant);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> saveWithLocation(@RequestBody Restaurant restaurant) {
-        log.info("create new Restaurant");
+    public ResponseEntity<Restaurant> saveWithLocation(@Valid @RequestBody Restaurant restaurant) {
+        log.info("create new Restaurant {}", restaurant);
         checkNew(restaurant);
         Restaurant created = restaurantRepository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder

@@ -24,6 +24,7 @@ public class RestaurantService {
     @Transactional
     @Modifying
     public void delete(int restaurantId) {
+        restaurantRepository.getExisted(restaurantId);
         List<Menu> menus = menuRepository.findAllByRestaurantId(restaurantId);
         menus.forEach(menu -> menuService.delete(menu.id(), restaurantId));
         mealRepository.deleteAllByRestaurantId(restaurantId);

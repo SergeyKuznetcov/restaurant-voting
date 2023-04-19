@@ -1,5 +1,6 @@
 package ru.topjava.graduate.restaurantvoting.web.menu;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,11 @@ import ru.topjava.graduate.restaurantvoting.repository.MenuRepository;
 import ru.topjava.graduate.restaurantvoting.repository.RestaurantRepository;
 import ru.topjava.graduate.restaurantvoting.service.MenuService;
 import ru.topjava.graduate.restaurantvoting.util.RestUrlUtil;
-import ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil;
 
 import java.net.URI;
 import java.util.List;
 
-import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.checkExisted;
-import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.checkNew;
+import static ru.topjava.graduate.restaurantvoting.util.validation.ValidationUtil.*;
 
 @RestController
 @Slf4j
@@ -61,9 +60,10 @@ public class MenuAdminController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int restaurantId, @RequestBody Menu menu, @PathVariable int id) {
+    public void update(@PathVariable int restaurantId, @Valid @RequestBody Menu menu, @PathVariable int id) {
         log.info("update Menu id = {}", id);
-        ValidationUtil.assureIdConsistent(menu, id);
+        menuRepository.getExisted(id);
+        assureIdConsistent(menu, id);
         menu.setRestaurant(restaurantRepository.getExisted(restaurantId));
         menuRepository.save(menu);
     }
@@ -83,7 +83,7 @@ public class MenuAdminController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> saveWithLocation(@PathVariable int restaurantId, @RequestBody Menu menu) {
+    public ResponseEntity<Menu> saveWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Menu menu) {
         log.info("create Menu for Restaurant id = {}", restaurantId);
         checkNew(menu);
         menu.setRestaurant(restaurantRepository.getExisted(restaurantId));

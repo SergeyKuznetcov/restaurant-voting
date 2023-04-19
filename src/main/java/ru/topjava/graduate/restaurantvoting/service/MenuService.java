@@ -50,6 +50,7 @@ public class MenuService {
     @Transactional
     @Modifying
     public void delete(int id, int restaurantId) {
+        menuRepository.getExisted(id);
         Menu menu = menuRepository.checkBelong(id, restaurantId);
         menu.getMeals().forEach(meal -> meal.getMenus().removeIf(menu1 -> menu1.id() == id));
 
