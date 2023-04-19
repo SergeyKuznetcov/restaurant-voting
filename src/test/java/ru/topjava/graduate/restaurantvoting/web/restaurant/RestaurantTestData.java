@@ -9,6 +9,7 @@ public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "meals", "menus");
 
     public static final int RESTAURANT1_ID = 1;
+    public static final int NOT_EXISTED_ID = 99;
 
     public static final Restaurant restaurant1 = new Restaurant(RESTAURANT1_ID, "restaurant1", "restaurant1 address");
     public static final Restaurant restaurant2 = new Restaurant(RESTAURANT1_ID + 1, "restaurant2", "restaurant2 address");
@@ -22,5 +23,13 @@ public class RestaurantTestData {
 
     public static Restaurant getUpdated() {
         return new Restaurant(RESTAURANT1_ID, "updated name", "updated address");
+    }
+
+    public static Restaurant getNotExisted(){
+        return new Restaurant(NOT_EXISTED_ID, "not existed", "not existed");
+    }
+
+    public static Restaurant getInvalid(Integer id){
+        return new Restaurant(id, null, null);
     }
 }

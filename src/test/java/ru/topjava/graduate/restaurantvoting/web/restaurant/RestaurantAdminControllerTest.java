@@ -37,6 +37,19 @@ class RestaurantAdminControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getUnauth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT1_ID))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void getNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + NOT_EXISTED_ID))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
@@ -56,6 +69,14 @@ class RestaurantAdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void deleteNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + NOT_EXISTED_ID))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void createWithLocation() throws Exception {
         Restaurant newRestaurant = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -71,13 +92,45 @@ class RestaurantAdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void createInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(null))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void update() throws Exception {
         Restaurant updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
                 .andExpect(status().isNoContent());
 
         RESTAURANT_MATCHER.assertMatch(restaurantRepository.getExisted(RESTAURANT1_ID), updated);
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void updateInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(RESTAURANT1_ID))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void updateNotExisted() throws Exception {
+        Restaurant notExisted = RestaurantTestData.getNotExisted();
+        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + NOT_EXISTED_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(notExisted)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

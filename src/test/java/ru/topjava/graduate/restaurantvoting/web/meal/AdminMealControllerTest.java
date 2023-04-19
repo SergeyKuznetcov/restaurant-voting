@@ -20,7 +20,7 @@ import static ru.topjava.graduate.restaurantvoting.web.meal.MealTestData.*;
 
 class AdminMealControllerTest extends AbstractControllerTest {
 
-    public static final String REST_URL_SLASH = REST_URL_RESTAURANT1_MEAL + "/";
+    public static final String REST_URL_SLASH = REST_URL_RESTAURANT1_MEALS + "/";
 
     @Autowired
     private MealRepository mealRepository;
@@ -28,7 +28,7 @@ class AdminMealControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MealTestData.MEAL1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MEAL1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -37,8 +37,23 @@ class AdminMealControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
-    void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_RESTAURANT1_MEAL))
+    void getNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + NOT_EXISTED_ID))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getUnauth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MEAL1_ID))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void getAllByRestaurant() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_RESTAURANT1_MEALS))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -55,9 +70,17 @@ class AdminMealControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void deleteNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + NOT_EXISTED_ID))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void createWithLocation() throws Exception {
         Meal newMeal = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_RESTAURANT1_MEAL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL_RESTAURANT1_MEALS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMeal)));
 
@@ -71,6 +94,16 @@ class AdminMealControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void createInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL_RESTAURANT1_MEALS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(null))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void update() throws Exception {
         Meal updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + MEAL1_ID)
@@ -79,5 +112,15 @@ class AdminMealControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         MEAL_MATCHER.assertMatch(mealRepository.getExisted(MEAL1_ID), updated);
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void updateInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(MEAL1_ID))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

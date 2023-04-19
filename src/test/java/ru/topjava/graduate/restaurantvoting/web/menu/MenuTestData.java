@@ -16,6 +16,7 @@ public class MenuTestData {
             MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "restaurant", "meals", "votes");
 
     public static final int MENU1_ID = 1;
+    public static final int NOT_EXISTED_ID = 99;
 
     public static final Menu menu1 = new Menu(MENU1_ID, "restaurant1 menu1", LocalDate.of(2020, 1, 30));
     public static final Menu menu2 = new Menu(MENU1_ID + 1, "restaurant2 menu1", LocalDate.of(2020, 1, 30));
@@ -30,5 +31,9 @@ public class MenuTestData {
 
     public static Menu getUpdated() {
         return new Menu(MENU1_ID, "updated menu", LocalDate.of(2021, 1, 21));
+    }
+
+    public static Menu getInvalid(Integer id) {
+        return new Menu(id, null, null);
     }
 }

@@ -3,17 +3,19 @@ package ru.topjava.graduate.restaurantvoting.web.meal;
 import ru.topjava.graduate.restaurantvoting.model.Meal;
 import ru.topjava.graduate.restaurantvoting.util.RestUrlUtil;
 import ru.topjava.graduate.restaurantvoting.web.MatcherFactory;
-import ru.topjava.graduate.restaurantvoting.web.restaurant.RestaurantTestData;
 
 import java.util.List;
 
+import static ru.topjava.graduate.restaurantvoting.web.restaurant.RestaurantTestData.RESTAURANT1_ID;
+
 public class MealTestData {
 
-    public static final String REST_URL_RESTAURANT1_MEAL = RestUrlUtil.getMealRestUrlWithRestaurantId(RestaurantTestData.RESTAURANT1_ID);
+    public static final String REST_URL_RESTAURANT1_MEALS = RestUrlUtil.getMealRestUrlWithRestaurantId(RESTAURANT1_ID);
 
     public static final MatcherFactory.Matcher<Meal> MEAL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "restaurant", "menus");
 
     public static final int MEAL1_ID = 1;
+    public static final int NOT_EXISTED_ID = 99;
 
     public static final Meal meal1 = new Meal(MEAL1_ID, "restaurant1meal1", 100);
     public static final Meal meal2 = new Meal(MEAL1_ID + 1, "restaurant1meal2", 200);
@@ -30,5 +32,9 @@ public class MealTestData {
 
     public static Meal getUpdated() {
         return new Meal(MEAL1_ID, "updated meal", 999);
+    }
+
+    public static Meal getInvalid(Integer id) {
+        return new Meal(id, null, 999);
     }
 }

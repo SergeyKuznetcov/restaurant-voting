@@ -37,7 +37,22 @@ class MenuAdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
-    void getAll() throws Exception {
+    void getNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_RESTAURANT1_SLASH + NOT_EXISTED_ID))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getUnauth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_RESTAURANT1_SLASH + MENU1_ID))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void getAllByRestaurant() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_RESTAURANT1_MENU))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -51,6 +66,14 @@ class MenuAdminControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.delete(REST_URL_RESTAURANT1_SLASH + MENU1_ID))
                 .andExpect(status().isNoContent());
         Assertions.assertNull(menuRepository.get(MENU1_ID));
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void deleteNotExisted() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL_RESTAURANT1_SLASH + NOT_EXISTED_ID))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -70,6 +93,16 @@ class MenuAdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void createInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL_RESTAURANT1_MENU)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(null))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
     void update() throws Exception {
         Menu updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL_RESTAURANT1_SLASH + MENU1_ID)
@@ -78,5 +111,15 @@ class MenuAdminControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         MENU_MATCHER.assertMatch(menuRepository.getExisted(MENU1_ID), updated);
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_EMAIL)
+    void updateInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL_RESTAURANT1_SLASH + MENU1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getInvalid(MENU1_ID))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }
